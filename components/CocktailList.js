@@ -26,8 +26,8 @@ function CocktailList() {
                                     style={{ height: 250, width: 350 }}
                                 />
                             </View>
-                            <View style={ styles.cardText }>
-                                <Text key={item.id}>{ item.name}</Text>
+                            <View style={ styles.cardTextContainer }>
+                                <Text key={item.id} style={ styles.cardText }>{ item.name}</Text>
                             </View>
                         </View>
 
@@ -76,8 +76,10 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%"
     },
-    cardText: {
+    cardTextContainer: {
         paddingVertical: 10,
-        fontWeight: "bold"
+    },
+    cardText: {
+        fontWeight: "bold", fontSize: 18, fontStyle: "italic", textTransform: "capitalize"
     }
 })
