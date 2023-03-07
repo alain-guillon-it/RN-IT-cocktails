@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     cardImage: {
         flex: 0.5,
         width: "100%",
-        height: "100%"
+        height: "100%",
     },
     cardTextContainer: {
         paddingVertical: 10,
