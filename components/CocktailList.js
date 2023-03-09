@@ -8,10 +8,8 @@ import {
   ActivityIndicator,
   Dimensions,
 } from "react-native";
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-
-// import dataContext from "../context/DataContext";
 
 import CocktailDetails from "./CocktailDetails";
 
@@ -21,23 +19,31 @@ function CocktailList() {
 
   console.log(cocktails);
 
-  const fetchAllData = async () => {
+  const fetchData = async () => {
     try {
-      await axios
-        .get("https://www.thecocktaildb.com/api/json/v1/1/random.php")
-        .then((response) => {
-          setCocktails(response.data.drinks);
-          console.log("1er then", response.data);
-          setLoading(false);
-        })
-        .catch((e) => console.log(e));
+      const response = await axios.get("https://www.thecocktaildb.com/api/json/v1/1/random.php");
+      return response.data.drinks;
     } catch (error) {
       console.log(error);
     }
   };
+  const fetchAllData = async () => {
+    const cocktailsTest = [];
+    for (let i = 0; i < 10; i++) {
+      const cocktail = await fetchData();
+      cocktailsTest.push(cocktail);
+    }
+    setCocktails([...cocktailsTest]);
+    console.log( {
+      "cocktails": cocktails,
+      "espace": "---------------------------------------",
+      cocktailsTest
+    })
+    setLoading(false);
+  };
 
   useEffect(() => {
-    fetchAllData();
+    fetchAllData()
   }, []);
 
   return (
