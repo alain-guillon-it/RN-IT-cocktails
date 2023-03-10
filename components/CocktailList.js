@@ -11,9 +11,7 @@ import {
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-import CocktailDetails from "./CocktailDetails";
-
-function CocktailList() {
+function CocktailList({ navigation }) {
   const [cocktails, setCocktails] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -28,15 +26,22 @@ function CocktailList() {
     }
   };
   const fetchAllData = async () => {
-    const toto = [];
+    const cocktailsRandom = [];
     for (let i = 0; i < 10; i++) {
-      const cocktail = await fetchData();
-      toto.push(cocktail);
+      const oneCocktailRandom = await fetchData();
+      cocktailsRandom.push(oneCocktailRandom);
     }
-    setCocktails([...toto]);
-
-    console.log(cocktails);
+    setCocktails([...cocktailsRandom]);
     setLoading(false);
+  };
+
+  const fetchAllDataMoreFiveCoktails = async () => {
+    const moreFiveCocktails = [...cocktails];
+    for (let i = 0; i < 5; index++) {
+      const oneCocktailRandom = await fetchData();
+      moreFiveCocktails.push(oneCocktailRandom);
+    }
+    setCocktails([...moreFiveCocktails]);
   };
 
   useEffect(() => {
@@ -60,12 +65,17 @@ function CocktailList() {
           <FlatList
             data={cocktails}
             keyExtractor={cocktails.idDrink}
-            onEndReached={fetchAllData}
-            onEndReachedThreshold={0.2}
+            onEndReached={fetchAllDataMoreFiveCoktails}
+            onEndReachedThreshold={0.4}
             renderItem={(cocktail) => (
               <TouchableWithoutFeedback
                 onPress={() => {
-                  alert(cocktail.item[0].strDrink);
+                  //alert(cocktail.item[0].strDrink);
+                  navigation.navigate("Detail", {
+                    cocktail: {
+                      ...cocktail.item[0],
+                    },
+                  });
                 }}
               >
                 <View style={styles.card}>

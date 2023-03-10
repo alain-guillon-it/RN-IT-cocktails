@@ -1,11 +1,16 @@
-import { Image, StyleSheet, Text, View, Dimensions, FlatList, TouchableWithoutFeedback } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  FlatList,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { useState } from "react";
 
 function Profile() {
-
-
-  const [favoris, setFavoris] = useState([])
-
+  const [favoris, setFavoris] = useState([]);
 
   return (
     <View style={styles.container}>
@@ -18,27 +23,43 @@ function Profile() {
 
       <View style={styles.main}>
         <TouchableWithoutFeedback
-          onPress={ () => alert("Bouhhhhhhhhhh, tu veux devenir mon copain ?") }
+          onPress={() => alert("Bouhhhhhhhhhh, tu veux devenir mon copain ?")}
         >
-        <Image
-          source={{
-            uri: "https://images.assetsdelivery.com/compings_v2/drawkman/drawkman2007/drawkman200700312.jpg",
-          }}
-          style={{
-            height: Dimensions.get("window").height * 0.3,
-            width: Dimensions.get("window").width * 0.75,
-          }}
-        />
+          <Image
+            source={{
+              uri: "https://s2.dmcdn.net/v/9trLF1LWQGoVS3ZO5/x1080",
+            }}
+            style={{
+              height: Dimensions.get("window").height * 0.3,
+              width: Dimensions.get("window").width * 0.75,
+            }}
+          />
         </TouchableWithoutFeedback>
       </View>
 
       <View style={styles.footer}>
         <Text style={{ fontSize: 24 }}>Liste des favoris</Text>
-        <View style={{ alignItems: "center", justifyContent:"center" }}>
-          { favoris.length > 0 ? (
-              <FlatList data={ favoris } renderItem={ (currentFavoris) => <Text>{ currentFavoris }</Text> } />
+        <View style={{ alignItems: "center", justifyContent: "center" }}>
+          {favoris.length > 0 ? (
+            <FlatList
+              data={favoris}
+              renderItem={(currentFavoris) => <Text>{currentFavoris}</Text>}
+            />
           ) : (
-              <Text style={{ marginVertical: 16, fontSize: 16, color: "white", fontWeight: "bold", backgroundColor: "brown", opacity: 0.6, paddingHorizontal: 16, paddingVertical: 16}}>Désolé aucun favoris pour le moment</Text>
+            <Text
+              style={{
+                marginVertical: 16,
+                fontSize: 16,
+                color: "white",
+                fontWeight: "bold",
+                backgroundColor: "brown",
+                opacity: 0.6,
+                paddingHorizontal: 16,
+                paddingVertical: 16,
+              }}
+            >
+              Désolé aucun favoris pour le moment
+            </Text>
           )}
         </View>
       </View>
@@ -60,12 +81,12 @@ const styles = StyleSheet.create({
   },
   h1: {
     fontSize: 32,
-    marginBottom: 16
+    marginBottom: 16,
   },
   p: {
     letterSpacing: 2,
     fontStyle: "italic",
-    paddingHorizontal: 24
+    paddingHorizontal: 24,
   },
   main: {
     flex: 0.4,
