@@ -41,7 +41,7 @@ function CocktailList({ navigation }) {
       const oneCocktailRandom = await fetchData();
       moreFiveCocktails.push(oneCocktailRandom);
     }
-    setCocktails([...moreFiveCocktails]);
+    setCocktails([...cocktails, ...moreFiveCocktails]);
   };
 
   useEffect(() => {
@@ -58,7 +58,7 @@ function CocktailList({ navigation }) {
         {loading ? (
           <ActivityIndicator
             size="large"
-            color={"#425b8a"}
+            color={"#402717"}
             style={{ alignItems: "center", justifyContent: "center" }}
           />
         ) : (
@@ -122,14 +122,14 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 0.1,
-    backgroundColor: "#425b8a",
+    backgroundColor: "#402717",
     alignItems: "center",
     justifyContent: "center",
     elevation: 10,
   },
   list: {
     flex: 0.9,
-    backgroundColor: "#F1F1F1",
+    backgroundColor: "#474749",
     padding: 16,
     alignItems: "center",
   },
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
   },
   card: {
-    backgroundColor: "#D1D1D1",
+    backgroundColor: "#402717",
     width: 350,
     justifyContent: "center",
     alignItems: "center",
@@ -160,14 +160,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontStyle: "italic",
     textTransform: "capitalize",
+    color: "#f0d020",
   },
   textCategory: {
-    backgroundColor: "grey",
+    backgroundColor: "#f0d020",
     marginTop: 16,
     paddingHorizontal: 8,
     paddingVertical: 8,
     width: Dimensions.get("window").width * 0.8,
-    color: "white",
+    color: "#474749",
+    fontWeight: "bold",
     opacity: 0.7,
     fontSize: 18,
     textTransform: "uppercase",

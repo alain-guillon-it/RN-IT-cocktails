@@ -11,7 +11,6 @@ import Profile from "./components/Profile";
 import Favorite from "./components/Favorite";
 
 const Stack = createStackNavigator();
-
 function Home() {
   return (
     <Stack.Navigator>
@@ -21,9 +20,7 @@ function Home() {
   );
 }
 
-// const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-
 export default function App() {
   return (
     <NavigationContainer>

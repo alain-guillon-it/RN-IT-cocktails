@@ -53,7 +53,7 @@ function CocktailDetails({ route }) {
       <View
         style={{ width: "100%", marginTop: 16, marginBottom: 8, flex: 0.05 }}
       >
-        <Text style={{ fontSize: 28, textAlign: "center", color: "#425b8a" }}>
+        <Text style={{ fontSize: 28, textAlign: "center", color: "#402717" }}>
           {oneCocktail.strDrink}
         </Text>
       </View>
@@ -80,7 +80,7 @@ function CocktailDetails({ route }) {
             style={{
               textAlign: "center",
               fontSize: 18,
-              backgroundColor: "#425b8a",
+              backgroundColor: "#402717",
               paddingVertical: 8,
               width: "100%",
               color: "#F1F1F1",
@@ -142,9 +142,9 @@ function CocktailDetails({ route }) {
               {console.log(item)}
               <Image
                 source={{
-                  uri: `https://www.thecocktaildb.com/images/ingredients/${item.item.name}-Small.png`,
-                  width: 50,
-                  height: 50,
+                  uri: `https://www.thecocktaildb.com/images/ingredients/${item.item.name}-Medium.png`,
+                  width: 100,
+                  height: 100,
                 }}
               />
               <Text style={{ fontSize: 16, fontWeight: "bold" }}>
