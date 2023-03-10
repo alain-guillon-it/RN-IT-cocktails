@@ -13,7 +13,6 @@ function CocktailDetails({ route }) {
   const [oneCocktail, setOneCocktail] = useState({ ...route.params.cocktail });
   const [ingredients, setIngredients] = useState([]);
 
-
   useEffect(async () => {
     const response = await axios.get(
       `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${oneCocktail.idDrink}`
@@ -51,8 +50,10 @@ function CocktailDetails({ route }) {
       </View>
 
       {/* TITLE */}
-      <View style={{ width: "100%", marginVertical: 16, flex: 0.1 }}>
-        <Text style={{ fontSize: 32, textAlign: "center", color: "#425b8a" }}>
+      <View
+        style={{ width: "100%", marginTop: 16, marginBottom: 8, flex: 0.05 }}
+      >
+        <Text style={{ fontSize: 28, textAlign: "center", color: "#425b8a" }}>
           {oneCocktail.strDrink}
         </Text>
       </View>
@@ -61,27 +62,33 @@ function CocktailDetails({ route }) {
       <View
         style={{
           width: "100%",
-          paddingHorizontal: 8,
           marginBottom: 8,
+          paddingHorizontal: 8,
+          alignItems: "center",
+          justifyContent: "center",
           flex: 0.1,
         }}
       >
         <TouchableWithoutFeedback
           onPress={() =>
-            Alert.alert("Description", oneCocktail.strInstructions, [
+            Alert.alert("Instruction", oneCocktail.strInstructions, [
               { text: "OK", onPress: () => console.log("OK Pressed") },
             ])
           }
         >
           <Text
             style={{
-              fontSize: 18,
               textAlign: "center",
-              color: "#333333",
-              fontStyle: "italic",
+              fontSize: 18,
+              backgroundColor: "#425b8a",
+              paddingVertical: 8,
+              width: "100%",
+              color: "#F1F1F1",
+              borderRadius: 5,
+              elevation: 5,
             }}
           >
-            Clic sur moi pour Voir les instructions
+            Clic sur moi pour voir les instructions
           </Text>
         </TouchableWithoutFeedback>
       </View>
@@ -90,22 +97,24 @@ function CocktailDetails({ route }) {
       <View
         style={{
           width: "100%",
-          flex: 0.1,
+          flex: 0.05,
           paddingHorizontal: 16,
           marginBottom: 8,
+          alignItems: "center",
         }}
       >
         <Text
           style={{
+            fontSize: 20,
             textAlign: "center",
-            fontSize: 18,
-            backgroundColor: "#425b8a",
-            paddingVertical: 8,
-            width: "100%",
-            color: "#F1F1F1",
+            color: "#333333",
+            fontWeight: "bold",
           }}
         >
-          Catégorie : <Text>{oneCocktail.strCategory}</Text>
+          Catégorie :{" "}
+          <Text style={{ textTransform: "uppercase" }}>
+            {oneCocktail.strCategory}
+          </Text>
         </Text>
       </View>
 
