@@ -36,12 +36,16 @@ function CocktailList({ navigation }) {
   };
 
   const fetchAllDataMoreFiveCoktails = async () => {
+    console.log("fetchAllDataMoreFiveCoktails");
     const moreFiveCocktails = [...cocktails];
-    for (let i = 0; i < 5; index++) {
+    for (let i = 0; i < 5; i++) {
       const oneCocktailRandom = await fetchData();
       moreFiveCocktails.push(oneCocktailRandom);
     }
-    setCocktails([...cocktails, ...moreFiveCocktails]);
+    setCocktails((prevCocktails) => [
+      ...prevCocktails,
+      ...moreFiveCocktails.slice(-5),
+    ]);
   };
 
   useEffect(() => {
