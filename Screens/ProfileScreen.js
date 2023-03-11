@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 	},
 	textRed: {
-		color: 'salmon',
+		color: 'red',
 	},
 	alertInfo: {
 		marginVertical: 16,

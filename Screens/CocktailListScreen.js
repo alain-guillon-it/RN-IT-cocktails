@@ -12,8 +12,11 @@ import {
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+// Utilitaires
+import myColor from '../utils/Colors';
+
 // Composant
-function CocktailListScreen({ navigation }) {
+export default function CocktailListScreen({ navigation }) {
 	// State
 	const [cocktails, setCocktails] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -70,19 +73,20 @@ function CocktailListScreen({ navigation }) {
 				<Text style={styles.textWhite}>Cocktails IT</Text>
 			</View>
 
-			<View style={styles.list}>
-				{loading ? (
-					<ActivityIndicator
-						size='large'
-						color={'#402717'}
-						style={{ alignItems: 'center', justifyContent: 'center' }}
-					/>
-				) : (
+			{loading ? (
+				<ActivityIndicator
+					size='large'
+					color={myColor.blueDark}
+					style={{ alignItems: 'center', justifyContent: 'center' }}
+				/>
+			) : (
+				<View style={styles.list}>
 					<FlatList
 						data={cocktails}
 						keyExtractor={cocktails.idDrink}
 						onEndReached={fetchAllDataMoreFiveCoktails}
 						onEndReachedThreshold={0.4}
+						numColumns={2}
 						renderItem={(cocktail) => (
 							<TouchableWithoutFeedback
 								onPress={() => {
@@ -101,22 +105,30 @@ function CocktailListScreen({ navigation }) {
 												uri: cocktail.item[0].strDrinkThumb,
 											}}
 											resizeMode={'cover'}
-											style={{
-												height:
-													Dimensions.get('window').height * 0.4,
-												width: Dimensions.get('window').width * 1,
-											}}
+											style={styles.cardImage}
 										/>
-										<View style={{ position: 'absolute', zIndex: 2 }}>
+										<View
+											style={{
+												position: 'absolute',
+												zIndex: 2,
+											}}
+										>
 											<Text style={styles.textCategory}>
+												<Text>📑 - </Text>
 												{cocktail.item[0].strCategory}
 											</Text>
 										</View>
 									</View>
 									<View style={styles.cardTextContainer}>
+										<Text>🍸</Text>
 										<Text
 											key={cocktail.item[0].idDrink}
-											style={styles.cardText}
+											style={[
+												styles.cardText,
+												{
+													color: myColor.white,
+												},
+											]}
 										>
 											{cocktail.item[0].strDrink}
 										</Text>
@@ -125,13 +137,11 @@ function CocktailListScreen({ navigation }) {
 							</TouchableWithoutFeedback>
 						)}
 					/>
-				)}
-			</View>
+				</View>
+			)}
 		</View>
 	);
 }
-
-export default CocktailListScreen;
 
 const styles = StyleSheet.create({
 	container: {
@@ -139,56 +149,77 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		flex: 0.1,
-		backgroundColor: '#402717',
+		backgroundColor: myColor.blueDark,
 		alignItems: 'center',
 		justifyContent: 'center',
 		elevation: 10,
 	},
-	list: {
-		flex: 0.9,
-		backgroundColor: '#474749',
-		padding: 16,
-		alignItems: 'center',
-	},
+
 	textWhite: {
-		color: 'white',
+		color: myColor.white,
 		fontSize: 28,
 	},
-	card: {
-		backgroundColor: '#402717',
-		width: 350,
-		justifyContent: 'center',
+
+	list: {
+		flex: 0.9,
+		width: '100%',
+		backgroundColor: myColor.grey,
+		paddingLeft: 11,
+		paddingRight: 22,
+		paddingVertical: 11,
+		flexDirection: 'row',
+		flexWrap: 'wrap',
 		alignItems: 'center',
-		marginVertical: 16,
+		justifyContent: 'center',
+	},
+	card: {
+		width: '48%',
+		height: 190,
 		elevation: 5,
+		backgroundColor: myColor.white,
+		zIndex: 0,
+		position: 'relative',
+		margin: 5,
+		borderRadius: 4,
 	},
 	cardImage: {
-		flex: 0.5,
+		zIndex: 1,
+		position: 'absolute',
 		width: '100%',
-		height: '100%',
-		position: 'relative',
-		zIndex: 0,
+		height: 190,
 	},
+
 	cardTextContainer: {
-		paddingVertical: 10,
+		zIndex: 2,
+		paddingVertical: 4,
+		paddingHorizontal: 8,
+		width: '100%',
+		position: 'absolute',
+		bottom: 0,
+		backgroundColor: myColor.blueDark,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
 	},
+
 	cardText: {
+		zIndex: 3,
 		fontWeight: 'bold',
-		fontSize: 18,
+		fontSize: 12,
 		fontStyle: 'italic',
 		textTransform: 'capitalize',
-		color: '#f0d020',
 	},
+
 	textCategory: {
-		backgroundColor: '#f0d020',
-		marginTop: 16,
-		paddingHorizontal: 8,
-		paddingVertical: 8,
-		width: Dimensions.get('window').width * 0.8,
-		color: '#474749',
+		position: 'absolute',
+		top: 15,
+		padding: 4,
+		backgroundColor: myColor.white,
+		width: Dimensions.get('window').width * 0.4,
+		color: myColor.black,
 		fontWeight: 'bold',
 		opacity: 0.7,
-		fontSize: 18,
+		fontSize: 10,
 		textTransform: 'uppercase',
 	},
 });
