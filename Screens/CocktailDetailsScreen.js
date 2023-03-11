@@ -1,164 +1,188 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+// Librairie React
+import { useEffect, useState } from 'react';
+
+// Librairie React Native
 import {
-  Text,
-  View,
-  Image,
-  TouchableWithoutFeedback,
-  Alert,
-  FlatList,
-} from "react-native";
+	StyleSheet,
+	Text,
+	View,
+	Image,
+	TouchableWithoutFeedback,
+	Alert,
+	FlatList,
+} from 'react-native';
 
-function CocktailDetailsScreen({ route }) {
-  const [oneCocktail, setOneCocktail] = useState({ ...route.params.cocktail });
-  const [ingredients, setIngredients] = useState([]);
+// Librairie Tiers
+import axios from 'axios';
 
-  useEffect(async () => {
-    const response = await axios.get(
-      `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${oneCocktail.idDrink}`
-    );
-    const data = response.data.drinks[0];
+// Utilitaires
+import myColor from '../utils/Colors';
 
-    setOneCocktail(data);
-    // Récupération des ingrédients de la boisson
+// Composant
+export default function CocktailDetailsScreen({ route }) {
+	// State
+	const [oneCocktail, setOneCocktail] = useState({ ...route.params.cocktail });
+	const [ingredients, setIngredients] = useState([]);
 
-    const ingredientsTemporaire = [];
-    for (let i = 1; i <= 15; i++) {
-      if (data[`strIngredient${i}`]) {
-        ingredientsTemporaire.push({
-          name: data[`strIngredient${i}`],
-          measure: data[`strMeasure${i}`],
-        });
-      } else {
-        break;
-      }
-    }
-    setIngredients(ingredientsTemporaire);
-  }, []);
+	// Méthode 1 pour récupérer un cocktail par son ID
+	const getOneCocktailByID = async (id) => {
+		const response = await axios.get(
+			`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`,
+		);
+		const data = response.data.drinks[0];
+		setOneCocktail(data);
+		return data;
+	};
 
-  return (
-    <View key={oneCocktail.idDrink} style={{ flex: 1 }}>
-      {/* IMAGE */}
-      <View style={{ width: "100%", flex: 0.4 }}>
-        <Image
-          source={{
-            uri: oneCocktail.strDrinkThumb,
-            width: "100%",
-            height: "100%",
-          }}
-        />
-      </View>
+	// Méthode 2 pour récupérer les ingrédients
+	const getAllIngredients = async (responseData) => {
+		const ingredientsTemporaire = [];
+		for (let i = 1; i <= 15; i++) {
+			if (responseData[`strIngredient${i}`]) {
+				ingredientsTemporaire.push({
+					name: responseData[`strIngredient${i}`],
+					measure: responseData[`strMeasure${i}`],
+				});
+			} else {
+				break;
+			}
+		}
+		setIngredients(ingredientsTemporaire);
+	};
 
-      {/* TITLE */}
-      <View
-        style={{ width: "100%", marginTop: 16, marginBottom: 8, flex: 0.05 }}
-      >
-        <Text style={{ fontSize: 28, textAlign: "center", color: "#402717" }}>
-          {oneCocktail.strDrink}
-        </Text>
-      </View>
+	// Mise à jour du cocktail détails
+	useEffect(async () => {
+		const data = await getOneCocktailByID(oneCocktail.idDrink);
+		await getAllIngredients(data);
+	}, []);
 
-      {/* DESCRIPTION */}
-      <View
-        style={{
-          width: "100%",
-          marginBottom: 8,
-          paddingHorizontal: 8,
-          alignItems: "center",
-          justifyContent: "center",
-          flex: 0.1,
-        }}
-      >
-        <TouchableWithoutFeedback
-          onPress={() =>
-            Alert.alert("Instruction", oneCocktail.strInstructions, [
-              { text: "OK", onPress: () => console.log("OK Pressed") },
-            ])
-          }
-        >
-          <Text
-            style={{
-              textAlign: "center",
-              fontSize: 18,
-              backgroundColor: "#402717",
-              paddingVertical: 8,
-              width: "100%",
-              color: "#F1F1F1",
-              borderRadius: 5,
-              elevation: 5,
-            }}
-          >
-            Clic sur moi pour voir les instructions
-          </Text>
-        </TouchableWithoutFeedback>
-      </View>
+	return (
+		<View
+			key={oneCocktail.idDrink}
+			style={styles.container}
+		>
+			{/* IMAGE */}
+			<View style={{ width: '100%', flex: 0.4 }}>
+				<Image
+					source={{
+						uri: oneCocktail.strDrinkThumb,
+						width: '100%',
+						height: '100%',
+					}}
+				/>
+			</View>
 
-      {/* CATEGORY */}
-      <View
-        style={{
-          width: "100%",
-          flex: 0.05,
-          paddingHorizontal: 16,
-          marginBottom: 8,
-          alignItems: "center",
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 20,
-            textAlign: "center",
-            color: "#333333",
-            fontWeight: "bold",
-          }}
-        >
-          Catégorie :{" "}
-          <Text style={{ textTransform: "uppercase" }}>
-            {oneCocktail.strCategory}
-          </Text>
-        </Text>
-      </View>
+			{/* TITLE */}
+			<View style={{ width: '100%', marginTop: 16, marginBottom: 8, flex: 0.05 }}>
+				<Text style={{ fontSize: 28, textAlign: 'center', color: '#402717' }}>
+					{oneCocktail.strDrink}
+				</Text>
+			</View>
 
-      {/* INGREDIENTS */}
-      <View
-        style={{
-          width: "100%",
-          paddingHorizontal: 8,
-          flex: 0.4,
-        }}
-      >
-        <FlatList
-          data={ingredients}
-          renderItem={(item, index) => (
-            <View
-              key={index}
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "flex-start",
-                paddingHorizontal: 32,
-                paddingVertical: 8,
-              }}
-            >
-              {console.log(item)}
-              <Image
-                source={{
-                  uri: `https://www.thecocktaildb.com/images/ingredients/${item.item.name}-Medium.png`,
-                  width: 100,
-                  height: 100,
-                }}
-              />
-              <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-                {item.item.name} of {"    "}
-                <Text style={{ paddingLeft: 5, color: "salmon" }}>
-                  {item.item.measure}
-                </Text>
-              </Text>
-            </View>
-          )}
-        />
-      </View>
-    </View>
-  );
+			{/* DESCRIPTION */}
+			<View
+				style={{
+					width: '100%',
+					marginBottom: 8,
+					paddingHorizontal: 8,
+					alignItems: 'center',
+					justifyContent: 'center',
+					flex: 0.1,
+				}}
+			>
+				<TouchableWithoutFeedback
+					onPress={() =>
+						Alert.alert('Instruction', oneCocktail.strInstructions, [
+							{ text: 'OK', onPress: () => console.log('OK Pressed') },
+						])
+					}
+				>
+					<Text
+						style={{
+							textAlign: 'center',
+							fontSize: 18,
+							backgroundColor: '#402717',
+							paddingVertical: 8,
+							width: '100%',
+							color: '#F1F1F1',
+							borderRadius: 5,
+							elevation: 5,
+						}}
+					>
+						Clic sur moi pour voir les instructions
+					</Text>
+				</TouchableWithoutFeedback>
+			</View>
+
+			{/* CATEGORY */}
+			<View
+				style={{
+					width: '100%',
+					flex: 0.05,
+					paddingHorizontal: 16,
+					marginBottom: 8,
+					alignItems: 'center',
+				}}
+			>
+				<Text
+					style={{
+						fontSize: 20,
+						textAlign: 'center',
+						color: '#333333',
+						fontWeight: 'bold',
+					}}
+				>
+					Catégorie :{' '}
+					<Text style={{ textTransform: 'uppercase' }}>
+						{oneCocktail.strCategory}
+					</Text>
+				</Text>
+			</View>
+
+			{/* INGREDIENTS */}
+			<View
+				style={{
+					width: '100%',
+					paddingHorizontal: 8,
+					flex: 0.4,
+				}}
+			>
+				<FlatList
+					data={ingredients}
+					renderItem={(item, index) => (
+						<View
+							key={index}
+							style={{
+								flexDirection: 'row',
+								alignItems: 'center',
+								justifyContent: 'flex-start',
+								paddingHorizontal: 32,
+								paddingVertical: 8,
+							}}
+						>
+							{console.log(item)}
+							<Image
+								source={{
+									uri: `https://www.thecocktaildb.com/images/ingredients/${item.item.name}-Medium.png`,
+									width: 100,
+									height: 100,
+								}}
+							/>
+							<Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+								{item.item.name} of {'    '}
+								<Text style={{ paddingLeft: 5, color: 'salmon' }}>
+									{item.item.measure}
+								</Text>
+							</Text>
+						</View>
+					)}
+				/>
+			</View>
+		</View>
+	);
 }
 
-export default CocktailDetailsScreen;
+// Style de la partie Détails
+const styles = StyleSheet.create({
+	container: { flex: 1 },
+});
