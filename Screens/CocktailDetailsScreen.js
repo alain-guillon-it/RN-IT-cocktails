@@ -9,7 +9,7 @@ import {
   FlatList,
 } from "react-native";
 
-function CocktailDetails({ route }) {
+function CocktailDetailsScreen({ route }) {
   const [oneCocktail, setOneCocktail] = useState({ ...route.params.cocktail });
   const [ingredients, setIngredients] = useState([]);
 
@@ -161,4 +161,4 @@ function CocktailDetails({ route }) {
   );
 }
 
-export default CocktailDetails;
+export default CocktailDetailsScreen;
