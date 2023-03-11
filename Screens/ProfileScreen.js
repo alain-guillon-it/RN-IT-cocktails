@@ -13,6 +13,9 @@ import {
 	Alert,
 } from 'react-native';
 
+// Utilitaires
+import myColor from '../utils/Colors';
+
 // Composant
 export default function ProfileScreen() {
 	// State
@@ -81,8 +84,8 @@ const styles = StyleSheet.create({
 	h1: {
 		fontSize: 32,
 		marginBottom: 16,
-		backgroundColor: 'white',
-		color: '#333333',
+		backgroundColor: myColor.blueDark,
+		color: myColor.white,
 		textAlign: 'center',
 		paddingVertical: 8,
 		opacity: 0.7,
@@ -97,21 +100,21 @@ const styles = StyleSheet.create({
 		fontStyle: 'italic',
 		paddingHorizontal: 24,
 		paddingVertical: 12,
-		backgroundColor: 'white',
+		backgroundColor: myColor.white,
 		opacity: 0.9,
 	},
 	strong: {
 		fontWeight: 'bold',
 	},
 	textRed: {
-		color: 'red',
+		color: myColor.red,
 	},
 	alertInfo: {
 		marginVertical: 16,
 		fontSize: 16,
-		color: 'darkblue',
+		color: myColor.blueDark,
 		fontWeight: 'bold',
-		backgroundColor: 'skyblue',
+		backgroundColor: myColor.blueLight,
 		opacity: 0.6,
 		paddingHorizontal: 16,
 		paddingVertical: 16,
