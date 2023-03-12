@@ -69,14 +69,10 @@ export default function CocktailListScreen({ navigation }) {
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.title}>
-				<Text style={styles.textWhite}>Cocktails IT</Text>
-			</View>
-
 			{loading ? (
 				<ActivityIndicator
 					size='large'
-					color={myColor.blueDark}
+					color={myColor.primary}
 					style={{ alignItems: 'center', justifyContent: 'center' }}
 				/>
 			) : (
@@ -91,7 +87,7 @@ export default function CocktailListScreen({ navigation }) {
 							<TouchableWithoutFeedback
 								onPress={() => {
 									//alert(cocktail.item[0].strDrink);
-									navigation.navigate('Detail', {
+									navigation.navigate('CocktailDetail', {
 										cocktail: {
 											...cocktail.item[0],
 										},
@@ -126,7 +122,7 @@ export default function CocktailListScreen({ navigation }) {
 											style={[
 												styles.cardText,
 												{
-													color: myColor.white,
+													color: myColor.textWhite,
 												},
 											]}
 										>
@@ -147,23 +143,16 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 	},
-	title: {
-		flex: 0.1,
-		backgroundColor: myColor.blueDark,
-		alignItems: 'center',
-		justifyContent: 'center',
-		elevation: 10,
-	},
 
 	textWhite: {
-		color: myColor.white,
+		color: myColor.textWhite,
 		fontSize: 28,
 	},
 
 	list: {
-		flex: 0.9,
+		flex: 1,
 		width: '100%',
-		backgroundColor: myColor.grey,
+		backgroundColor: myColor.tertiary,
 		paddingLeft: 11,
 		paddingRight: 22,
 		paddingVertical: 11,
@@ -176,7 +165,7 @@ const styles = StyleSheet.create({
 		width: '48%',
 		height: 190,
 		elevation: 5,
-		backgroundColor: myColor.white,
+		backgroundColor: myColor.textPrimary,
 		zIndex: 0,
 		position: 'relative',
 		margin: 5,
@@ -196,7 +185,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		position: 'absolute',
 		bottom: 0,
-		backgroundColor: myColor.blueDark,
+		backgroundColor: myColor.primary,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
@@ -214,9 +203,9 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		top: 15,
 		padding: 4,
-		backgroundColor: myColor.white,
+		backgroundColor: myColor.textDanger,
 		width: Dimensions.get('window').width * 0.4,
-		color: myColor.black,
+		color: myColor.tertiary,
 		fontWeight: 'bold',
 		opacity: 0.7,
 		fontSize: 10,
