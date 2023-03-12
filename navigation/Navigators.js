@@ -21,6 +21,7 @@ import FavoriteScreen from '../screens/FavoriteScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import ProjectScreen from '../screens/ProjectScreen';
 import TestimonialScreen from '../screens/TestimonialScreen';
+import DrawerContentScreen from '../screens/drawer/DrawerContentScreen';
 
 // Configuration des couleurs du header
 const headerColorDFS26C = {
@@ -107,9 +108,22 @@ export const AppTabNavigator = () => {
 // Navigateur Secondaire
 const Stack = createStackNavigator();
 
-export const CocktailsListStackNavigator = () => {
+export const CocktailsListStackNavigator = ({ navigation }) => {
 	return (
-		<Stack.Navigator initialRouteName='CocktailList'>
+		<Stack.Navigator
+			initialRouteName='CocktailList'
+			screenOptions={{
+				headerRight: () => (
+					<HeaderButtons HeaderButtonComponent={HeaderButton}>
+						<Item
+							title='Information'
+							iconName='md-information-circle'
+							onPress={() => navigation.navigate('StackProject')}
+						/>
+					</HeaderButtons>
+				),
+			}}
+		>
 			<Stack.Screen
 				name='StackProject'
 				component={ProjectScreen}
@@ -123,15 +137,6 @@ export const CocktailsListStackNavigator = () => {
 				component={DrawerMenu}
 				options={({ navigation }) => ({
 					title: 'DFS26C - TP React Native',
-					headerRight: () => (
-						<HeaderButtons HeaderButtonComponent={HeaderButton}>
-							<Item
-								title='Information'
-								iconName='md-information-circle'
-								onPress={() => navigation.navigate('StackProject')}
-							/>
-						</HeaderButtons>
-					),
 					...headerColorDFS26C,
 				})}
 			/>
@@ -155,15 +160,23 @@ const DrawerMenu = () => {
 		<Drawer.Navigator
 			useLegacyImplementation
 			screenOptions={{
-				drawerActiveBackgroundColor: myColors.dark,
+				drawerActiveBackgroundColor: myColors.textDanger,
 				drawerActiveTintColor: myColors.textWhite,
 			}}
+			drawerContent={(props) => <DrawerContentScreen {...props} />}
 		>
 			<Drawer.Screen
 				name='CocktailList'
 				component={CocktailListScreen}
 				options={({ navigation }) => ({
-					title: '🍸 - Liste des cocktails',
+					title: 'Liste des cocktails',
+					drawerIcon: ({ focused, color, size }) => (
+						<MaterialCommunityIcons
+							name={focused ? 'glass-cocktail' : 'glass-cocktail-off'}
+							color={color}
+							size={size}
+						/>
+					),
 					...headerColorDrawer,
 				})}
 			/>
@@ -172,7 +185,14 @@ const DrawerMenu = () => {
 				name='DrawerAbout'
 				component={AboutScreen}
 				options={{
-					title: "🧔 - A propos de l'auteur",
+					title: "A propos de l'auteur",
+					drawerIcon: ({ focused, color, size }) => (
+						<FontAwesome
+							name={focused ? 'user' : 'user-o'}
+							color={color}
+							size={size}
+						/>
+					),
 					...headerColorDrawer,
 				}}
 			/>
@@ -180,7 +200,14 @@ const DrawerMenu = () => {
 				name='DrawerTestimonial'
 				component={TestimonialScreen}
 				options={{
-					title: '🤝 - Remerciements',
+					title: 'Remerciements',
+					drawerIcon: ({ focused, color, size }) => (
+						<MaterialCommunityIcons
+							name={focused ? 'book-account' : 'book-account-outline'}
+							color={color}
+							size={size}
+						/>
+					),
 					...headerColorDrawer,
 				}}
 			/>

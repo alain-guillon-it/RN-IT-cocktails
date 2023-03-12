@@ -2,17 +2,18 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-// Imports des composants obligatoire
+// Écrans
 import AboutScreen from './screens/AboutScreen';
 import ProjectScreen from './screens/ProjectScreen';
 import TestimonialScreen from './screens/TestimonialScreen';
+import DrawerContentScreen from '../screens/drawer/DrawerContentScreen';
 
 const Drawer = createDrawerNavigator();
 
 export function DrawerScreen() {
 	return (
 		<NavigationContainer>
-			<Drawer.Navigator>
+			<Drawer.Navigator drawerContent={<DrawerContentScreen />}>
 				<Drawer.Screen
 					name='About'
 					component={AboutScreen}
