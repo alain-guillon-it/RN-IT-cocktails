@@ -1,4 +1,5 @@
 // Dépendances
+import { useState, useEffect } from 'react';
 import {
 	Text,
 	View,
@@ -6,20 +7,31 @@ import {
 	FlatList,
 	Image,
 	TouchableWithoutFeedback,
+	TouchableOpacity,
 	ActivityIndicator,
 	Dimensions,
 } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 
 // Utilitaires
 import myColor from '../utils/Colors';
+import {
+	addFavorite,
+	removeFavorite,
+	toggleFavorite,
+} from '../redux-toolkit/features/favorite/favoriteSlice';
 
 // Composant
 export default function CocktailListScreen({ navigation }) {
 	// State
-	const [cocktails, setCocktails] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [cocktails, setCocktails] = useState([]);
+
+	// Redux Toolkit
+	const dispatch = useDispatch();
+	const favorites = useSelector((state) => state.favoriteRedux || []);
 
 	// Un cocktail aléatoire
 	const fetchData = async () => {
@@ -30,6 +42,7 @@ export default function CocktailListScreen({ navigation }) {
 			return response.data.drinks;
 		} catch (error) {
 			console.log(error);
+			throw new Error('Une erreur est survenue');
 		}
 	};
 
@@ -46,26 +59,30 @@ export default function CocktailListScreen({ navigation }) {
 		setLoading(false);
 	};
 
-	// +5 cocktails aléatoire à la liste précédente
-	const fetchAllDataMoreFiveCoktails = async () => {
+	// +10 cocktails aléatoire à la liste précédente
+	const fetchAllDataMoreTenCoktails = async () => {
 		// Déconstruction du tableau de cocktail issu du state
-		const moreFiveCocktails = [...cocktails];
-		for (let i = 0; i < 5; i++) {
+		const moreTenCocktails = [...cocktails];
+		for (let i = 0; i < 10; i++) {
 			const oneCocktailRandom = await fetchData();
-			moreFiveCocktails.push(oneCocktailRandom);
+			moreTenCocktails.push(oneCocktailRandom);
 		}
-		// Mise à jour du state avec seulement un ajout des 5 derniers cocktails ajouté
+		// Mise à jour du state avec seulement un ajout des 10 derniers cocktails ajouté
 		setCocktails((prevCocktails) => [
 			...prevCocktails,
-			...moreFiveCocktails.slice(-5),
+			...moreTenCocktails.slice(-10),
 		]);
 	};
 
 	// Mise à jour des états en fonction de la mise à jour d'un fetch
 	useEffect(() => {
 		fetchAllData();
-		fetchAllDataMoreFiveCoktails();
+		fetchAllDataMoreTenCoktails();
 	}, []);
+
+	const isFavorite = (item) => {
+		return favorites.some((e) => e.idDrink === item.idDrink);
+	};
 
 	return (
 		<View style={styles.container}>
@@ -79,8 +96,8 @@ export default function CocktailListScreen({ navigation }) {
 				<View style={styles.list}>
 					<FlatList
 						data={cocktails}
-						keyExtractor={cocktails.idDrink}
-						onEndReached={fetchAllDataMoreFiveCoktails}
+						keyExtractor={(cocktail) => cocktail[0].idDrink}
+						onEndReached={fetchAllDataMoreTenCoktails}
 						onEndReachedThreshold={0.4}
 						numColumns={2}
 						renderItem={(cocktail) => (
@@ -129,6 +146,30 @@ export default function CocktailListScreen({ navigation }) {
 											{cocktail.item[0].strDrink}
 										</Text>
 									</View>
+									<TouchableOpacity
+										onPress={() =>
+											dispatch(addFavorite(cocktail.item[0]))
+										}
+										style={{
+											position: 'absolute',
+											zIndex: 2,
+											top: 5,
+											right: 0,
+											backgroundColor: myColor.primary,
+											borderRadius: 50,
+											padding: 10,
+										}}
+									>
+										<FontAwesome
+											name={
+												isFavorite(cocktail.item[0])
+													? 'heart'
+													: 'heart-o'
+											}
+											size={20}
+											color={myColor.textWhite}
+										/>
+									</TouchableOpacity>
 								</View>
 							</TouchableWithoutFeedback>
 						)}

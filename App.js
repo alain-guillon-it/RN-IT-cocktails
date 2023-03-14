@@ -1,4 +1,4 @@
-// Librairie React Redux
+// Dépendances
 import { Provider } from 'react-redux';
 
 // Magasin ( STORE )

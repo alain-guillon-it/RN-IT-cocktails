@@ -1,7 +1,5 @@
-// Librairie React
+// Dépendances
 import { useEffect, useState } from 'react';
-
-// Librairie React Native
 import {
 	StyleSheet,
 	Text,
@@ -11,11 +9,7 @@ import {
 	Alert,
 	FlatList,
 } from 'react-native';
-
-// Librairie React Redux Toolkit
 import { userSelector, useDispatch } from 'react-redux';
-
-// Librairie Tiers
 import axios from 'axios';
 
 // Utilitaires
@@ -26,7 +20,6 @@ export default function CocktailDetailsScreen({ route }) {
 	// State
 	const [oneCocktail, setOneCocktail] = useState({ ...route.params.cocktail });
 	const [ingredients, setIngredients] = useState([]);
-	
 
 	// Méthode 1 pour récupérer un cocktail par son ID
 	const getOneCocktailByID = async (id) => {
@@ -55,9 +48,14 @@ export default function CocktailDetailsScreen({ route }) {
 	};
 
 	// Mise à jour du cocktail détails
-	useEffect(async () => {
-		const data = await getOneCocktailByID(oneCocktail.idDrink);
-		await getAllIngredients(data);
+	useEffect(() => {
+		getOneCocktailByID(oneCocktail.idDrink)
+			.then((data) => {
+				getAllIngredients(data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 	}, []);
 
 	return (
@@ -70,6 +68,8 @@ export default function CocktailDetailsScreen({ route }) {
 				<Image
 					source={{
 						uri: oneCocktail.strDrinkThumb,
+					}}
+					style={{
 						width: '100%',
 						height: '100%',
 					}}
@@ -78,7 +78,7 @@ export default function CocktailDetailsScreen({ route }) {
 
 			{/* TITLE */}
 			<View style={{ width: '100%', marginTop: 16, marginBottom: 8, flex: 0.05 }}>
-				<Text style={{ fontSize: 28, textAlign: 'center', color: '#402717' }}>
+				<Text style={{ fontSize: 28, textAlign: 'center', color: myColor.primary }}>
 					{oneCocktail.strDrink}
 				</Text>
 			</View>
@@ -105,7 +105,7 @@ export default function CocktailDetailsScreen({ route }) {
 						style={{
 							textAlign: 'center',
 							fontSize: 18,
-							backgroundColor: '#402717',
+							backgroundColor: myColor.primary ,
 							paddingVertical: 8,
 							width: '100%',
 							color: '#F1F1F1',
@@ -113,7 +113,7 @@ export default function CocktailDetailsScreen({ route }) {
 							elevation: 5,
 						}}
 					>
-						Clic sur moi pour voir les instructions
+						👁 - voir les instructions
 					</Text>
 				</TouchableWithoutFeedback>
 			</View>
