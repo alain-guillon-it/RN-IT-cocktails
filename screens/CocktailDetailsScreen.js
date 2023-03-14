@@ -12,6 +12,9 @@ import {
 	FlatList,
 } from 'react-native';
 
+// Librairie React Redux Toolkit
+import { userSelector, useDispatch } from 'react-redux';
+
 // Librairie Tiers
 import axios from 'axios';
 
@@ -23,6 +26,7 @@ export default function CocktailDetailsScreen({ route }) {
 	// State
 	const [oneCocktail, setOneCocktail] = useState({ ...route.params.cocktail });
 	const [ingredients, setIngredients] = useState([]);
+	
 
 	// Méthode 1 pour récupérer un cocktail par son ID
 	const getOneCocktailByID = async (id) => {
